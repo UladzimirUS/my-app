@@ -1,0 +1,39 @@
+name: Update parking data
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: parking-data
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download from Overpass
+        run: scripts/fetch_spots.sh spots_pl.tsv
+      - name: Compress
+        run: |
+          gzip -9 -c spots_pl.tsv > spots_pl.tsv.gz
+          ls -l spots_pl.tsv spots_pl.tsv.gz
+          cut -f5 spots_pl.tsv | sort | uniq -c
+      - name: Publish as release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view data >/dev/null 2>&1 || \
+            gh release create data --target "$GITHUB_SHA" --title "Parking data" \
+              --notes "Auto-updated daily from OpenStreetMap (ODbL). Used by the app." --latest=false
+          gh release upload data spots_pl.tsv.gz --clobber
