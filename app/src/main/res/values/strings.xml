@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Koperty</string>
+
+    <string name="status_loading">Pobieranie miejsc z OpenStreetMap…</string>
+    <string name="status_updating">Aktualizacja danych…</string>
+    <string name="status_downloading">Pobrano %1$s…</string>
+    <string name="status_no_data">Brak danych</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$s miejsce dla ON</item>
+        <item quantity="few">%1$s miejsca dla ON</item>
+        <item quantity="many">%1$s miejsc dla ON</item>
+        <item quantity="other">%1$s miejsca dla ON</item>
+    </plurals>
+
+    <string name="error_no_data">Nie udało się pobrać danych. Sprawdź połączenie z internetem.</string>
+    <string name="error_update">Nie udało się zaktualizować danych — pokazuję zapisane.</string>
+    <string name="retry">Ponów</string>
+
+    <string name="title_single_space">Miejsce dla osoby z niepełnosprawnością (koperta)</string>
+    <string name="title_parking_lot">Parking z miejscami dla ON</string>
+    <plurals name="spaces_disabled">
+        <item quantity="one">%d miejsce dla osób z niepełnosprawnością</item>
+        <item quantity="few">%d miejsca dla osób z niepełnosprawnością</item>
+        <item quantity="many">%d miejsc dla osób z niepełnosprawnością</item>
+        <item quantity="other">%d miejsca dla osób z niepełnosprawnością</item>
+    </plurals>
+    <string name="spaces_disabled_unknown">Są miejsca dla osób z niepełnosprawnością (liczba nieznana)</string>
+
+    <string name="label_access">Dostęp: %1$s</string>
+    <string name="access_unknown">brak danych</string>
+    <string name="access_public">ogólnodostępne</string>
+    <string name="access_customers">dla klientów</string>
+    <string name="access_permissive">ogólnodostępne (teren prywatny)</string>
+    <string name="access_destination">dla odwiedzających</string>
+    <string name="access_permit">z kartą parkingową</string>
+    <string name="fee_yes">Płatny</string>
+    <string name="fee_no">Bezpłatny</string>
+    <string name="label_maxstay">Maks. czas postoju: %1$s</string>
+    <string name="label_hours">Godziny: %1$s</string>
+    <string name="label_operator">Zarządca: %1$s</string>
+    <string name="label_distance">Odległość: %1$s</string>
+    <string name="parking_underground">Parking podziemny</string>
+    <string name="parking_multistorey">Parking wielopoziomowy</string>
+    <string name="parking_street">Przy ulicy</string>
+    <string name="parking_surface">Parking naziemny</string>
+    <string name="parking_rooftop">Parking na dachu</string>
+
+    <string name="action_refresh">Odśwież dane</string>
+    <string name="action_my_location">Moja lokalizacja</string>
+    <string name="action_nearest">Najbliższe miejsce dla ON</string>
+    <string name="action_close">Zamknij</string>
+    <string name="action_navigate">Nawiguj</string>
+    <string name="action_osm">OpenStreetMap</string>
+
+    <string name="location_denied">Bez dostępu do lokalizacji nie znajdę najbliższego miejsca.</string>
+    <string name="location_waiting">Ustalanie lokalizacji…</string>
+    <string name="no_app">Brak aplikacji do otwarcia tego linku</string>
+</resources>

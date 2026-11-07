@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Koperty</string>
+
+    <string name="status_loading">Загрузка мест из OpenStreetMap…</string>
+    <string name="status_updating">Обновление данных…</string>
+    <string name="status_downloading">Загружено %1$s…</string>
+    <string name="status_no_data">Нет данных</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$s место для инвалидов</item>
+        <item quantity="few">%1$s места для инвалидов</item>
+        <item quantity="many">%1$s мест для инвалидов</item>
+        <item quantity="other">%1$s места для инвалидов</item>
+    </plurals>
+
+    <string name="error_no_data">Не удалось загрузить данные. Проверьте подключение к интернету.</string>
+    <string name="error_update">Не удалось обновить данные — показываю сохранённые.</string>
+    <string name="retry">Повторить</string>
+
+    <string name="title_single_space">Место для инвалида (koperta)</string>
+    <string name="title_parking_lot">Парковка с местами для инвалидов</string>
+    <plurals name="spaces_disabled">
+        <item quantity="one">%d место для инвалидов</item>
+        <item quantity="few">%d места для инвалидов</item>
+        <item quantity="many">%d мест для инвалидов</item>
+        <item quantity="other">%d места для инвалидов</item>
+    </plurals>
+    <string name="spaces_disabled_unknown">Есть места для инвалидов (количество неизвестно)</string>
+
+    <string name="label_access">Доступ: %1$s</string>
+    <string name="access_unknown">нет данных</string>
+    <string name="access_public">общедоступное</string>
+    <string name="access_customers">для клиентов</string>
+    <string name="access_permissive">общедоступное (частная территория)</string>
+    <string name="access_destination">для посетителей</string>
+    <string name="access_permit">с парковочной картой</string>
+    <string name="fee_yes">Платная</string>
+    <string name="fee_no">Бесплатная</string>
+    <string name="label_maxstay">Макс. время стоянки: %1$s</string>
+    <string name="label_hours">Часы работы: %1$s</string>
+    <string name="label_operator">Оператор: %1$s</string>
+    <string name="label_distance">Расстояние: %1$s</string>
+    <string name="parking_underground">Подземная парковка</string>
+    <string name="parking_multistorey">Многоуровневая парковка</string>
+    <string name="parking_street">У дороги</string>
+    <string name="parking_surface">Наземная парковка</string>
+    <string name="parking_rooftop">Парковка на крыше</string>
+
+    <string name="action_refresh">Обновить данные</string>
+    <string name="action_my_location">Моё местоположение</string>
+    <string name="action_nearest">Ближайшее место для инвалидов</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_navigate">Маршрут</string>
+    <string name="action_osm">OpenStreetMap</string>
+
+    <string name="location_denied">Без доступа к геолокации не найти ближайшее место.</string>
+    <string name="location_waiting">Определяю местоположение…</string>
+    <string name="no_app">Нет приложения, чтобы открыть ссылку</string>
+</resources>
