@@ -202,8 +202,7 @@ class MainActivity : AppCompatActivity() {
         state.error?.let { error ->
             vm.errorShown()
             val msg = if (state.spots.isEmpty()) R.string.error_no_data else R.string.error_update
-            Snackbar.make(findViewById(R.id.root), getString(msg) + "\n" + (error.message ?: error.javaClass.simpleName),
-                Snackbar.LENGTH_INDEFINITE)
+            makeSnack(getString(msg) + "\n" + (error.message ?: error.javaClass.simpleName), Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.retry) { vm.refresh() }
                 .show()
         }
@@ -366,7 +365,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun snack(text: String) = Snackbar.make(findViewById(R.id.root), text, Snackbar.LENGTH_LONG).show()
+    private fun snack(text: String) = makeSnack(text, Snackbar.LENGTH_LONG).show()
+
+    private fun makeSnack(text: String, duration: Int): Snackbar =
+        Snackbar.make(findViewById(R.id.root), text, duration).apply {
+            setAnchorView(R.id.fabs)
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.maxLines = 8
+        }
 
     override fun onResume() {
         super.onResume()

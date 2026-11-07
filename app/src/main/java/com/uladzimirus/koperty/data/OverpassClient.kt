@@ -5,6 +5,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import java.util.zip.GZIPInputStream
 
 /** Downloads Overpass API results to a file, falling back to mirror servers. */
 class OverpassClient(
@@ -13,17 +14,35 @@ class OverpassClient(
 ) {
     /** @param onProgress called with the number of bytes received so far. */
     fun download(query: String, dest: File, onProgress: (Long) -> Unit = {}) {
-        var lastError: Exception? = null
+        val errors = mutableListOf<String>()
         for (endpoint in endpoints) {
             try {
                 downloadFrom(endpoint, query, dest, onProgress)
                 return
             } catch (e: IOException) {
-                lastError = e
+                errors += e.message ?: "${e.javaClass.simpleName}: ${host(endpoint)}"
                 dest.delete()
             }
         }
-        throw lastError ?: IOException("No Overpass endpoints configured")
+        throw IOException(errors.joinToString("; ").ifEmpty { "No Overpass endpoints configured" })
+    }
+
+    /** Plain GET of a (optionally .gz) file, e.g. the prebuilt dataset. */
+    fun get(url: String, dest: File, onProgress: (Long) -> Unit = {}) {
+        val conn = URL(url).openConnection() as HttpURLConnection
+        try {
+            conn.instanceFollowRedirects = true
+            conn.connectTimeout = 20_000
+            conn.readTimeout = 60_000
+            conn.setRequestProperty("User-Agent", userAgent)
+            val code = conn.responseCode
+            if (code != HttpURLConnection.HTTP_OK) throw IOException("HTTP $code: ${host(url)}")
+            val raw = conn.inputStream
+            val input = if (url.endsWith(".gz")) GZIPInputStream(raw, 64 * 1024) else raw
+            copy(input, dest, onProgress)
+        } finally {
+            conn.disconnect()
+        }
     }
 
     private fun downloadFrom(endpoint: String, query: String, dest: File, onProgress: (Long) -> Unit) {
@@ -32,17 +51,25 @@ class OverpassClient(
             conn.requestMethod = "POST"
             conn.doOutput = true
             conn.connectTimeout = 20_000
-            conn.readTimeout = 300_000
+            conn.readTimeout = 330_000
             conn.setRequestProperty("User-Agent", userAgent)
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
             conn.outputStream.use { it.write(("data=" + URLEncoder.encode(query, "UTF-8")).toByteArray()) }
 
             val code = conn.responseCode
-            if (code != HttpURLConnection.HTTP_OK) throw IOException("HTTP $code from $endpoint")
+            if (code != HttpURLConnection.HTTP_OK) throw IOException("HTTP $code: ${host(endpoint)}")
             val contentType = conn.contentType.orEmpty()
-            if (contentType.contains("html", ignoreCase = true)) throw IOException("Unexpected $contentType from $endpoint")
+            if (contentType.contains("html", ignoreCase = true)) throw IOException("$contentType: ${host(endpoint)}")
+            copy(conn.inputStream, dest, onProgress)
+        } finally {
+            conn.disconnect()
+        }
+    }
 
-            conn.inputStream.use { input ->
+    private fun host(url: String) = runCatching { URL(url).host }.getOrDefault(url)
+
+    private fun copy(stream: java.io.InputStream, dest: File, onProgress: (Long) -> Unit) {
+            stream.use { input ->
                 dest.outputStream().use { output ->
                     val buffer = ByteArray(64 * 1024)
                     var total = 0L
@@ -60,9 +87,6 @@ class OverpassClient(
                     onProgress(total)
                 }
             }
-        } finally {
-            conn.disconnect()
-        }
     }
 
     companion object {

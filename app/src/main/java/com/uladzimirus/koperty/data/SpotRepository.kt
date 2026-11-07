@@ -25,13 +25,27 @@ class SpotRepository(context: Context) {
 
     suspend fun downloadPoland(onProgress: (Long) -> Unit): Snapshot = withContext(Dispatchers.IO) {
         val tmp = File(appContext.cacheDir, "spots_download.tsv")
+        val errors = mutableListOf<String>()
         try {
-            client.download(OverpassQueries.poland(), tmp, onProgress)
-            val spots = tmp.bufferedReader().useLines { SpotParser.parse(it) }
-            // Overpass CSV has no error trailer, so a truncated/failed answer shows up as "too few rows".
-            if (spots.size < MIN_EXPECTED) throw IOException("Incomplete answer from Overpass: ${spots.size} rows")
-            tmp.copyTo(cacheFile, overwrite = true)
-            Snapshot(spots, cacheFile.lastModified())
+            // 1) Prebuilt daily dataset (fast, served by GitHub CDN). 2) Live Overpass query as fallback.
+            val sources: List<Pair<String, () -> Unit>> = listOf(
+                "GitHub" to { client.get(DATASET_URL, tmp, onProgress) },
+                "Overpass" to { client.download(OverpassQueries.poland(), tmp, onProgress) },
+            )
+            for ((name, fetch) in sources) {
+                try {
+                    onProgress(0)
+                    fetch()
+                    val spots = tmp.bufferedReader().useLines { SpotParser.parse(it) }
+                    // Overpass CSV has no error trailer, so a truncated/failed answer shows up as "too few rows".
+                    if (spots.size < MIN_EXPECTED) throw IOException("${spots.size} rows")
+                    tmp.copyTo(cacheFile, overwrite = true)
+                    return@withContext Snapshot(spots, cacheFile.lastModified())
+                } catch (e: IOException) {
+                    errors += "$name: ${e.message ?: e.javaClass.simpleName}"
+                }
+            }
+            throw IOException(errors.joinToString("\n"))
         } finally {
             tmp.delete()
         }
@@ -39,6 +53,7 @@ class SpotRepository(context: Context) {
 
     companion object {
         private const val MIN_EXPECTED = 500
+        const val DATASET_URL = "https://github.com/UladzimirUS/my-app/releases/download/data/spots_pl.tsv.gz"
         const val MAX_AGE_MS = 7L * 24 * 60 * 60 * 1000
     }
 }

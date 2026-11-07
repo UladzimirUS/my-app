@@ -25,7 +25,7 @@ object OverpassQueries {
         // Restricted access is filtered on the server too, to keep the download small.
         val notPrivate = "[\"access\"!~\"^(private|no)$\"]"
         return """
-            [out:csv($fields;true)][timeout:240][maxsize:536870912];
+            [out:csv($fields;true)][timeout:300];
             $prefix
             (
               nwr["amenity"="parking_space"]["parking_space"="disabled"]$notPrivate$filter;
