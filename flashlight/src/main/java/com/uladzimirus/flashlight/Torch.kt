@@ -25,12 +25,13 @@ class Torch(context: Context) {
     }.getOrNull()
 
     /** Hardware strength levels; 1 means brightness can't be adjusted. */
-    val maxStrength: Int = if (Build.VERSION.SDK_INT >= 33 && cameraId != null) {
+    val maxStrength: Int = cameraId.let { id ->
+        if (Build.VERSION.SDK_INT < 33 || id == null) return@let 1
         runCatching {
-            cm.getCameraCharacteristics(cameraId)
+            cm.getCameraCharacteristics(id)
                 .get(CameraCharacteristics.FLASH_INFO_STRENGTH_MAXIMUM_LEVEL) ?: 1
         }.getOrDefault(1)
-    } else 1
+    }
 
     val hasFlash get() = cameraId != null
     val canDim get() = maxStrength > 1
