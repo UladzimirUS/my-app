@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Koperty"
 include(":app")
+include(":flashlight")

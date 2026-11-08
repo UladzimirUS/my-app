@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Flashlight" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#FF34C759</item>
+        <item name="android:windowBackground">#FF0C0D0F</item>
+    </style>
+</resources>

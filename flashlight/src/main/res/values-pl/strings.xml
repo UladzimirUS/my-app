@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Latarka</string>
+    <string name="on">Włączona</string>
+    <string name="off">Wyłączona</string>
+    <string name="turn_on">Włącz</string>
+    <string name="turn_off">Wyłącz</string>
+    <string name="settings">Ustawienia</string>
+    <string name="brightness">Jasność</string>
+    <string name="done">Gotowe</string>
+    <string name="add_tile">Dodaj do szybkich ustawień</string>
+    <string name="tile_exists">Kafelek jest już w szybkich ustawieniach</string>
+    <string name="no_dimming">To urządzenie nie obsługuje regulacji jasności latarki</string>
+    <string name="no_flash">Brak lampy błyskowej</string>
+    <string name="torch_busy">Latarka niedostępna — aparat może być zajęty</string>
+</resources>

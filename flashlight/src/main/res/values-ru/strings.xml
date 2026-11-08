@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Фонарик</string>
+    <string name="on">Включено</string>
+    <string name="off">Выключено</string>
+    <string name="turn_on">Включить</string>
+    <string name="turn_off">Выключить</string>
+    <string name="settings">Настройки</string>
+    <string name="brightness">Яркость</string>
+    <string name="done">Готово</string>
+    <string name="add_tile">Добавить в шторку</string>
+    <string name="tile_exists">Плитка уже есть в шторке</string>
+    <string name="no_dimming">Устройство не поддерживает регулировку яркости вспышки</string>
+    <string name="no_flash">На устройстве нет вспышки</string>
+    <string name="torch_busy">Вспышка недоступна — возможно, камера занята</string>
+</resources>
