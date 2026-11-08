@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
     private var syncing = false
 
+    /** Launcher icon tap toggles the torch right away (one tap). */
+    private var pendingToggle = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -105,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         val openPanel = savedInstanceState?.getBoolean(STATE_PANEL)
             ?: (intent?.action == ACTION_QS_PREFS)
         showPanel(openPanel, animate = false)
+        pendingToggle = savedInstanceState == null && intent?.action == Intent.ACTION_MAIN
 
         if (!torch.hasFlash) {
             status.setText(R.string.no_flash)
@@ -116,11 +120,19 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (intent.action == ACTION_QS_PREFS) showPanel(true)
+        if (intent.action == Intent.ACTION_MAIN) pendingToggle = true
     }
 
     override fun onStart() {
         super.onStart()
-        torch.listen { render() }
+        // The callback reports the real torch state first, then we toggle from it.
+        torch.listen {
+            if (pendingToggle) {
+                pendingToggle = false
+                if (!torch.toggle()) failed()
+            }
+            render()
+        }
         render()
     }
 
