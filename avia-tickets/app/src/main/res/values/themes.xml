@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="brand">#1565C0</color>
-    <style name="Theme.Avia" parent="Theme.Material3.DayNight.DarkActionBar">
+    <style name="Theme.Avia" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/brand</item>
         <item name="colorOnPrimary">@android:color/white</item>
     </style>
