@@ -1,0 +1,36 @@
+name: AviaOrders APK
+
+on:
+  push:
+    paths:
+      - "avia-tickets/**"
+      - ".github/workflows/avia.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: avia-tickets
+    steps:
+      - uses: actions/checkout@v4
+      - name: Console version + self-test (C++ core)
+        run: |
+          cmake -S console -B build-console
+          cmake --build build-console
+          ./build-console/avia --selftest > /dev/null && echo "C++ self-test passed"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build APK
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+          cp app/build/outputs/apk/debug/app-debug.apk AviaOrders.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AviaOrders-apk
+          path: avia-tickets/AviaOrders.apk
