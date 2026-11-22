@@ -1,0 +1,42 @@
+name: Ashes of Olympus APK
+
+on:
+  push:
+    paths:
+      - "games/ashes-of-olympus/**"
+      - ".github/workflows/olympus-apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: games/ashes-of-olympus/android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build APK
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleRelease
+      - name: Rename APK
+        run: cp app/build/outputs/apk/release/app-release.apk ashes-of-olympus.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ashes-of-olympus-apk
+          path: games/ashes-of-olympus/android/ashes-of-olympus.apk
+      - name: Publish to release "olympus-latest"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete olympus-latest --yes --cleanup-tag || true
+          gh release create olympus-latest ashes-of-olympus.apk \
+            --target "$GITHUB_SHA" --prerelease \
+            --title "Пепел Олимпа (APK)" \
+            --notes "Сборка из ветки ${GITHUB_REF_NAME}, коммит ${GITHUB_SHA::7}. Скачайте ashes-of-olympus.apk и установите на Android 7.0+."

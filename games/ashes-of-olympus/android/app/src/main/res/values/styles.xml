@@ -1,0 +1,8 @@
+<resources>
+    <style name="GameTheme" parent="android:Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@color/ic_bg</item>
+        <item name="android:statusBarColor">@color/ic_bg</item>
+        <item name="android:navigationBarColor">@color/ic_bg</item>
+    </style>
+    <color name="ic_bg">#FF1C130C</color>
+</resources>
