@@ -1,0 +1,35 @@
+<div id="app">
+  <canvas id="cv"></canvas>
+  <div id="hud" hidden>
+    <div class="hud-tl">
+      <b id="clsName"></b>
+      <span id="lvlTxt"></span>
+      <div class="bars">
+        <div class="bar hp"><i id="hpBar"></i><span id="hpTxt2"></span></div>
+        <div class="bar mp"><i id="mpBar"></i><span id="mpTxt2"></span></div>
+      </div>
+      <div id="buffs"></div>
+    </div>
+    <div id="tgt" hidden><b id="tgtName"></b><small id="tgtSub"></small><div><i id="tgtFill"></i></div></div>
+    <div id="bossbar" hidden><span id="bossName"></span><div><i id="bossFill"></i></div></div>
+    <div class="hud-tr">
+      <canvas id="mini" width="400" height="220"></canvas>
+      <div class="hud-btns">
+        <button id="bInv" type="button"></button><button id="bChar" type="button"></button><button id="bSk" type="button"></button>
+        <button id="bQ" type="button">Задания <kbd>J</kbd></button><button id="bMap" type="button">Карта <kbd>M</kbd></button><button id="bMenu" type="button">Меню <kbd>Esc</kbd></button>
+      </div>
+    </div>
+    <div id="banner"></div>
+    <div id="toasts"></div>
+    <button id="act" class="btn primary" type="button" hidden></button>
+    <div id="stick" hidden><div id="knob"></div></div>
+    <div class="hud-bottom">
+      <div class="globe hp"><i id="hpFill"></i><span id="hpTxt"></span></div>
+      <div class="midbar"><div id="skillbar"></div><div id="xpBar"><i id="xpFill"></i></div></div>
+      <div class="globe mp"><i id="mpFill"></i><span id="mpTxt"></span></div>
+    </div>
+  </div>
+  <div id="screen" class="screen"></div>
+  <div id="panel" class="panel" hidden></div>
+  <div id="ftip" class="tip" hidden></div>
+</div>
